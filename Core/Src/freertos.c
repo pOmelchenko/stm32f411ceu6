@@ -51,6 +51,7 @@ uint16_t value = 1000;
 /* USER CODE END Variables */
 osThreadId defaultTaskHandle;
 osThreadId ledTaskHandle;
+osThreadId displayTaskHandle;
 osMessageQId buttonQueueHandle;
 
 /* Private function prototypes -----------------------------------------------*/
@@ -60,6 +61,7 @@ osMessageQId buttonQueueHandle;
 
 void StartDefaultTask(void const * argument);
 void StartLedTask(void const * argument);
+void StartDisplayTask(void const * argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -119,6 +121,10 @@ void MX_FREERTOS_Init(void) {
   osThreadDef(ledTask, StartLedTask, osPriorityIdle, 0, 128);
   ledTaskHandle = osThreadCreate(osThread(ledTask), NULL);
 
+  /* definition and creation of displayTask */
+  osThreadDef(displayTask, StartDisplayTask, osPriorityIdle, 0, 1024);
+  displayTaskHandle = osThreadCreate(osThread(displayTask), NULL);
+
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
   /* USER CODE END RTOS_THREADS */
@@ -161,6 +167,24 @@ void StartLedTask(void const * argument)
 	  osDelay(value);
   }
   /* USER CODE END StartLedTask */
+}
+
+/* USER CODE BEGIN Header_StartDisplayTask */
+/**
+* @brief Function implementing the displayTask thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_StartDisplayTask */
+__weak void StartDisplayTask(void const * argument)
+{
+  /* USER CODE BEGIN StartDisplayTask */
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+  }
+  /* USER CODE END StartDisplayTask */
 }
 
 /* Private application code --------------------------------------------------*/
