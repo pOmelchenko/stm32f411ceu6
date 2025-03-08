@@ -49,6 +49,7 @@
 /* USER CODE END Variables */
 osThreadId defaultTaskHandle;
 osThreadId ledTaskHandle;
+osMessageQId buttonQueueHandle;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -97,6 +98,11 @@ void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN RTOS_TIMERS */
   /* start timers, add new ones, ... */
   /* USER CODE END RTOS_TIMERS */
+
+  /* Create the queue(s) */
+  /* definition and creation of buttonQueue */
+  osMessageQDef(buttonQueue, 16, uint16_t);
+  buttonQueueHandle = osMessageCreate(osMessageQ(buttonQueue), NULL);
 
   /* USER CODE BEGIN RTOS_QUEUES */
   /* add queues, ... */
