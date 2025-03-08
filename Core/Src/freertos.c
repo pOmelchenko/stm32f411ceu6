@@ -45,7 +45,9 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
-
+uint32_t currentTime;
+uint32_t previousTime;
+uint16_t value = 1000;
 /* USER CODE END Variables */
 osThreadId defaultTaskHandle;
 osThreadId ledTaskHandle;
@@ -154,13 +156,28 @@ void StartLedTask(void const * argument)
   /* Infinite loop */
   for(;;)
   {
-	HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
-    osDelay(1000);
+	  xQueueReceive(buttonQueueHandle, &value, 0);
+	  HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
+	  osDelay(value);
   }
   /* USER CODE END StartLedTask */
 }
 
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
-
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+	currentTime = HAL_GetTick();
+	if (GPIO_Pin == BUTTON_Pin && (currentTime - previousTime > 5)) {
+		if (value < 500) {
+			value = 1000;
+		} else {
+			value = 100;
+		}
+		xQueueSendToBackFromISR(buttonQueueHandle, &value, 0);
+		previousTime = currentTime;
+	} else {
+		__NOP();
+	}
+}
 /* USER CODE END Application */
