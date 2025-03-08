@@ -1,0 +1,6 @@
+.metadata/
+.settings/
+cmake*/
+[Rr]elease
+[Dd]ebug
+*.launch
