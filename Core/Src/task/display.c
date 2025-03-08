@@ -156,5 +156,5 @@ void ui_init(lv_display_t *disp)
   lv_obj_set_width(widget, LV_SIZE_CONTENT);
   lv_obj_set_style_text_font(widget, &lv_font_montserrat_14, 0);
   lv_obj_set_style_text_color(widget, lv_color_black(), 0);
-  lv_label_set_text(widget, "!Hello World!");
+  lv_label_set_text(widget, "Hello World!");
 }
