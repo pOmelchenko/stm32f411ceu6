@@ -6,12 +6,15 @@
 #include "lvgl.h"
 #include "./src/drivers/display/ili9341/lv_ili9341.h"
 
+#include "common.h"
+
 #define LCD_H_RES       240
 #define LCD_V_RES       320
 #define BUS_SPI1_POLL_TIMEOUT 0x1000U
 
 osThreadId LvglTaskHandle;
 lv_display_t *lcd_disp;
+lv_obj_t *widget;
 volatile int lcd_bus_busy = 0;
 
 void ui_init(lv_display_t *disp);
@@ -55,7 +58,13 @@ void StartDisplayTask(void const * argument)
 
   ui_init(lcd_disp);
 
+  AHT20_Data_t aht20_data;
+
   for(;;) {
+	if (xQueueReceive((QueueHandle_t) argument, ( void * ) &aht20_data, 0) != pdFALSE) {
+		lv_label_set_text_fmt(widget, "t: %.2f h: %.2f", aht20_data.temp, aht20_data.humid);
+	}
+
     /* The task running lv_timer_handler should have lower priority than that running `lv_tick_inc` */
     lv_timer_handler();
     /* raise the task priority of LVGL and/or reduce the handler period can improve the performance */
@@ -142,7 +151,6 @@ static void lcd_send_color(lv_display_t *disp, const uint8_t *cmd, size_t cmd_si
 
 void ui_init(lv_display_t *disp)
 {
-  lv_obj_t *widget;
 
   /* set screen background to white */
   lv_obj_t *scr = lv_screen_active();
