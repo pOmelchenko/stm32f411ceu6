@@ -1,3 +1,7 @@
+#include <stdint.h>
+
+#include "i2c.h"
+
 #define AHT_ADDR  0x38<<1
 #define HI2C      hi2c1
 
