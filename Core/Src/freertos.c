@@ -52,7 +52,9 @@ uint16_t value = 1000;
 osThreadId defaultTaskHandle;
 osThreadId ledTaskHandle;
 osThreadId displayTaskHandle;
+osThreadId aht20TaskHandle;
 osMessageQId buttonQueueHandle;
+osMessageQId aht20QueueHandle;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -62,6 +64,7 @@ osMessageQId buttonQueueHandle;
 void StartDefaultTask(void const * argument);
 void StartLedTask(void const * argument);
 void StartDisplayTask(void const * argument);
+void StartAht20Task(void const * argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -108,6 +111,10 @@ void MX_FREERTOS_Init(void) {
   osMessageQDef(buttonQueue, 16, uint16_t);
   buttonQueueHandle = osMessageCreate(osMessageQ(buttonQueue), NULL);
 
+  /* definition and creation of aht20Queue */
+  osMessageQDef(aht20Queue, 16, uint16_t);
+  aht20QueueHandle = osMessageCreate(osMessageQ(aht20Queue), NULL);
+
   /* USER CODE BEGIN RTOS_QUEUES */
   /* add queues, ... */
   /* USER CODE END RTOS_QUEUES */
@@ -124,6 +131,10 @@ void MX_FREERTOS_Init(void) {
   /* definition and creation of displayTask */
   osThreadDef(displayTask, StartDisplayTask, osPriorityIdle, 0, 1024);
   displayTaskHandle = osThreadCreate(osThread(displayTask), NULL);
+
+  /* definition and creation of aht20Task */
+  osThreadDef(aht20Task, StartAht20Task, osPriorityIdle, 0, 128);
+  aht20TaskHandle = osThreadCreate(osThread(aht20Task), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -185,6 +196,24 @@ __weak void StartDisplayTask(void const * argument)
     osDelay(1);
   }
   /* USER CODE END StartDisplayTask */
+}
+
+/* USER CODE BEGIN Header_StartAht20Task */
+/**
+* @brief Function implementing the aht20Task thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_StartAht20Task */
+__weak void StartAht20Task(void const * argument)
+{
+  /* USER CODE BEGIN StartAht20Task */
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+  }
+  /* USER CODE END StartAht20Task */
 }
 
 /* Private application code --------------------------------------------------*/
