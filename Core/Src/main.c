@@ -22,6 +22,7 @@
 #include "dma.h"
 #include "i2c.h"
 #include "spi.h"
+#include "tim.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -47,7 +48,6 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -94,7 +94,24 @@ int main(void)
   MX_DMA_Init();
   MX_I2C1_Init();
   MX_SPI1_Init();
+  MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
+//  HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_3);
+//int32_t CH3_DC = 0;
+//  while (1) {
+//	  while(CH3_DC < 100)
+//	  {
+//		  TIM3->CCR3 = CH3_DC;
+//		  CH3_DC += 1;
+//		  HAL_Delay(1);
+//	  }
+//	  while(CH3_DC > 0)
+//	  {
+//		  TIM3->CCR3 = CH3_DC;
+//		  CH3_DC -= 1;
+//		  HAL_Delay(1);
+//	  }
+//  }
 
   /* USER CODE END 2 */
 
